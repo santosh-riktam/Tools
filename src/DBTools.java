@@ -3,7 +3,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Contains methods to generate some strings from sql statements
+ * Contains methods for generating source code from sql statements
  * 
  * @author Santosh Kumar D
  * 
@@ -15,10 +15,10 @@ public class DBTools {
 	 * the rest for column names
 	 * 
 	 * @param createTableSql
-	 * @return
+	 *            - sql statement
+	 * @return - contract interfaces
 	 */
 	public static String getContractClassFromSql(String createTableSql) {
-
 		Pattern pattern = Pattern.compile("\"\\w+\"");
 		Matcher matcher = pattern.matcher(createTableSql);
 		ArrayList<String> names = new ArrayList<String>(), variableNames = new ArrayList<String>();
@@ -57,12 +57,10 @@ public class DBTools {
 		contractStringBuilder.append("\n}");
 
 		return contractStringBuilder.toString();
-
 	}
-	
 
 	/**
-	 * replaces small letters with capital letters and inserts underscore
+	 * Replaces small letters with capital letters and inserts underscore
 	 * between two words
 	 * 
 	 * @param string
@@ -70,6 +68,7 @@ public class DBTools {
 	 */
 	private static String capitalize(String string) {
 		StringBuilder stringBuilder = new StringBuilder();
+
 		// inserting '_' between words
 		for (int i = 0; i < string.length() - 1; i++) {
 			char currentChar = string.charAt(i), nextChar = string
@@ -80,12 +79,12 @@ public class DBTools {
 				stringBuilder.append('_');
 		}
 		stringBuilder.append(string.charAt(string.length() - 1));
+
 		return stringBuilder.toString().toUpperCase();
 	}
 
 	public static void main(String[] args) {
 		String sql = "CREATE TABLE \"Sites\" (\"s_id\" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL  UNIQUE , \"SiteID\" INTEGER,\"SiteName\" VARCHAR,\"Address1\" VARCHAR,\"Address2\" VARCHAR,\"Town\" VARCHAR,\"County\" VARCHAR,\"Postcode\" VARCHAR,\"Phone\" VARCHAR,\"RegionID\" INTEGER,\"CountryID\" INTEGER,\"Fixed\" BOOL,\"Pump\" BOOL,\"HGV\" BOOL,\"TwentyFourHour\" BOOL,\"LPG\" BOOL,\"RedDiesel\" BOOL,\"PolesignName\" VARCHAR,\"PolesignImg\" VARCHAR,\"Lon\" VARCHAR,\"Lat\" VARCHAR,\"DateAdded\" DATETIME,\"DateDeleted\" DATETIME,\"DateEdited\" DATETIME)";
 		System.out.println(getContractClassFromSql(sql));
-
 	}
 }
